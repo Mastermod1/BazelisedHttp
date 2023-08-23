@@ -1,7 +1,8 @@
+#include "http_server/httpServer.hpp"
 #include <iostream>
 
-int main()
-{
-    std::cout << "Hello Bazel!\n";
-    return 0;
+int main() {
+  http::TcpServer server = http::TcpServer();
+
+  return 0;
 }
