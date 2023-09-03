@@ -1,8 +1,9 @@
-#include "http_server/httpServer.hpp"
 #include <iostream>
 
-int main() {
-  http::TcpServer server = http::TcpServer();
+#include "http_server/httpServer.hpp"
 
-  return 0;
+int main() {
+    http::TcpServer server = http::TcpServer("192.168.1.35", 2137);
+    server.startListen();
+    return 0;
 }

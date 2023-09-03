@@ -1,13 +1,36 @@
 #ifndef HTTP_SERVER
 #define HTTP_SERVER
-namespace http
-{
-class TcpServer
-{
+
+#include <arpa/inet.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/socket.h>
+
+#include <string>
+
+namespace http {
+class TcpServer {
   public:
-    TcpServer();
+    TcpServer(std::string ip_address, int port);
     ~TcpServer();
+
+    void startListen();
+    void acceptConnection(int &new_socket);
+    std::string buildResponse();
+    void sendResponse();
+
   private:
+    std::string ip_address_;
+    int port_;
+    int socket_;
+    int new_socket_;
+    long incoming_message_;
+    struct sockaddr_in socket_address_;
+    unsigned int socket_address_length_;
+    std::string server_message_;
+
+    int startServer();
+    void closeServer();
 };
 }  // namespace http
 #endif
