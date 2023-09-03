@@ -8,16 +8,15 @@
 
 #include <string>
 
-namespace http {
-class TcpServer {
+namespace http
+{
+class TcpServer
+{
   public:
     TcpServer(std::string ip_address, int port);
     ~TcpServer();
 
     void startListen();
-    void acceptConnection(int &new_socket);
-    std::string buildResponse();
-    void sendResponse();
 
   private:
     std::string ip_address_;
@@ -31,6 +30,9 @@ class TcpServer {
 
     int startServer();
     void closeServer();
+    void acceptConnection(int &new_socket);
+    std::string buildResponse();
+    void sendResponse();
 };
 }  // namespace http
 #endif
