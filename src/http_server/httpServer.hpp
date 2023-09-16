@@ -17,6 +17,7 @@ class TcpServer
     ~TcpServer();
 
     void startListen();
+    void endListening();
 
   private:
     std::string ip_address_;
@@ -27,6 +28,7 @@ class TcpServer
     struct sockaddr_in socket_address_;
     unsigned int socket_address_length_;
     std::string server_message_;
+    bool is_listening_ = true;
 
     int startServer();
     void closeServer();

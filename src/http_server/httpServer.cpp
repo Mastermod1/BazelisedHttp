@@ -1,6 +1,5 @@
 #include "httpServer.hpp"
 
-#include <netinet/in.h>
 #include <unistd.h>
 
 #include <iostream>
@@ -54,6 +53,13 @@ int TcpServer::startServer()
         return 1;
     }
 
+    int yes = 1;
+    if (setsockopt(socket_, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int)) < 0)
+    {
+        exitWithError("Cannot set socket option");
+        return 1;
+    }
+
     if (bind(socket_, (sockaddr*)&socket_address_, socket_address_length_) < 0)
     {
         exitWithError("Cannot connect socket to address");
@@ -67,7 +73,13 @@ void TcpServer::closeServer()
 {
     close(socket_);
     close(new_socket_);
-    exit(0);
+    shutdown(socket_, SHUT_RDWR);
+}
+
+void TcpServer::endListening()
+{
+    is_listening_ = false;
+    closeServer();
 }
 
 void TcpServer::startListen()
@@ -83,7 +95,7 @@ void TcpServer::startListen()
     log(ss.str());
 
     int bytesReceived;
-    while (true)
+    while (is_listening_)
     {
         log("====== Waiting for a new connection ======\n\n\n");
         acceptConnection(new_socket_);
